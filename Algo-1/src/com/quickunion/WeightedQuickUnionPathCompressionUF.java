@@ -2,12 +2,12 @@ package com.quickunion;
 
 import java.util.Arrays;
 
-public class QuickUnionWeightedPathCompression {
+public class WeightedQuickUnionPathCompressionUF {
 	
 	private int [] id;
 	private int [] sizeid;
 	
-	QuickUnionWeightedPathCompression(int N) {
+	WeightedQuickUnionPathCompressionUF(int N) {
 		id = new int[N];sizeid = new int[N];
 		for (int i=0 ; i<N;i++) {
 			id[i] = i;sizeid[i]=1;
@@ -26,15 +26,20 @@ public class QuickUnionWeightedPathCompression {
 	  System.out.println(p +":"+ q+" Union :"+Arrays.toString(id) +" - size:"+ Arrays.toString(sizeid));
 	}
 	
-	private int root(int p) { //TODO put one more loop to set id of each examined node to the root.
-		while (p!=id[p]) {
-			 p= id[p];
+	private int root(int p) {
+		int root = p;
+		while (root != id[root])
+			root = id[root];
+		while (p != root) {   //puting one more loop to set id of each examined node to the root.
+			int newp = id[p];
+			id[p] = root;
+			p = newp;
 		}
-		return p;
+		return root;
 	}
 
 	public static void main(String[] args) {
-		QuickUnionWeightedPathCompression qu = new QuickUnionWeightedPathCompression(10);
+		WeightedQuickUnionPathCompressionUF qu = new WeightedQuickUnionPathCompressionUF(10);
 		qu.union(4,3);
 		qu.union(3,8);
 		qu.union(6,5);
