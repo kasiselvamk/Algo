@@ -19,7 +19,7 @@ public class PercolationStats {
 		outcomes = new double[trials];
 		while (trials-- > 0) {
 			Percolation per = new Percolation(n);
-			for(int i=1;;i++) {
+			for(;;) {
 				if(!per.percolates()) {
 					per.open(StdRandom.uniform(n)+1, StdRandom.uniform(n)+1);
 				}else {

@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-	private int [][] perco;
+	private boolean [][] perco;
 	private WeightedQuickUnionUF qu;
 	private int OpenSites;
 
@@ -12,7 +12,9 @@ public class Percolation {
 	public Percolation(int n) {
 	   if(n<=0) throw new IllegalArgumentException();
 	
-		perco = new int[n][n];int k = 0,N=(n*n)-1;
+		perco = new boolean[n][n];
+		int k = 0,N=(n*n)-1;
+		
 		qu = new WeightedQuickUnionUF(n*n);
 		
 		//Creating links for all top and bottom nodes.
@@ -33,27 +35,27 @@ public class Percolation {
 			throw new IllegalArgumentException();
 		} 
 		if(!isOpen(row,col)) {
-			perco[row-1][col-1] = 1;
+			perco[row-1][col-1] = Boolean.TRUE;
 			OpenSites++;
 			int curPos = getCorrespondingId(row,col,perco.length);int p;
 			//checking is neighbors has open (1)
 			//DOWN
-			if(row+1-1 < perco.length && perco[row+1-1][col-1] == 1) {
+			if(row+1-1 < perco.length && perco[row+1-1][col-1]) {
 				p = getCorrespondingId(row+1,col,perco.length);
 				qu.union(p, curPos);
 			}
 			//TOP
-			if(row-1-1 >=0 &&  perco[row-1-1][col-1] == 1) {
+			if(row-1-1 >=0 &&  perco[row-1-1][col-1] ) {
 				p = getCorrespondingId(row-1,col,perco.length);
 				qu.union(p, curPos);
 			}
 			//RIGHT
-			if(col+1-1 < perco.length && perco[row-1][col+1-1] == 1) {
+			if(col+1-1 < perco.length && perco[row-1][col+1-1]) {
 				p = getCorrespondingId(row,col+1,perco.length);
 				qu.union(p, curPos);
 			}
 			//LEFT
-			if(col-1-1 >=0 && perco[row-1][col-1-1] == 1) {
+			if(col-1-1 >=0 && perco[row-1][col-1-1]) {
 				p = getCorrespondingId(row,col-1,perco.length);
 				qu.union(p, curPos);
 			}
@@ -66,48 +68,42 @@ public class Percolation {
 		}else if ( col <=0 || col>perco.length ) {
 			throw new IllegalArgumentException();
 		}else {
-			return perco[row-1][col-1] == 1;
+			return perco[row-1][col-1];
 		}
 	
 	}
-
 	// is the site (row, col) full?
 	public boolean isFull(int row, int col){
-		
 		if( row <=0 || row>perco.length ) {
 			throw new IllegalArgumentException();
 		}else if ( col <=0 || col>perco.length ) {
 			throw new IllegalArgumentException();
-		} 
-		
+		}
 		if (isOpen(row, col)) {
-			int root =qu.find(getCorrespondingId(row,col,perco.length));
+			int root = qu.find(getCorrespondingId(row,col,perco.length));
 			return qu.find(0) == qu.find(root);
-
 		}else {
-			return false;
+			return Boolean.FALSE;
 		}
 	}
-
 	// returns the number of open sites
 	public int numberOfOpenSites(){
 		return OpenSites;
 	}
-
 	// does the system percolate?
 	public boolean percolates(){
+		if(perco.length ==1) {
+			if(isOpen(1, 1))return Boolean.TRUE;
+			else {return Boolean.FALSE;}
+		}
 		return qu.find(0) == qu.find(perco.length*perco.length -1);
 	}
 
 	// test client (optional)
 	public static void main(String[] args){
-		int n = 5;
+		int n = 20;
+		Percolation p = new Percolation(n);
+		System.out.println(p.isFull(18, 1));
 		
- 		Percolation p = new Percolation(n);
-		 
-        System.out.println( p.percolates());
-         
-        
- 		
 	}
 }
