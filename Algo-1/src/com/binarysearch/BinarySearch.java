@@ -1,6 +1,7 @@
 package com.binarysearch;
 
 import java.util.Arrays;
+import java.util.Deque;
 
 public class BinarySearch {
 
@@ -10,8 +11,8 @@ public class BinarySearch {
 		arr = new int [20];
 		for(int i=0;i<20;i++) {arr[i]=i;}
          System.out.println(Arrays.toString(arr));
-         System.out.println(find(199));
-
+         System.out.println(find(3));
+ 
 	}
 	
 	public static int find (int val) { 
@@ -20,6 +21,7 @@ public class BinarySearch {
 
 	        while (low <= high) {
 	            int mid = (low + high)/ 2;
+	            System.out.println("Low:"+low+" High:"+high);
  	            if (arr[mid] < val)
 	                low = mid + 1;
 	            else if (arr[mid] > val)
